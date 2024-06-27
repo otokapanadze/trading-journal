@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * @property string $symbol
+ * @property string $direction
+ * @property float $pnl
+ * @property string $open_at
+ * @property string $closes_at
+ * @property array $images
+ * @property array $params
+ * @property string $notes
+ * @property string $created_at
+ * @property string $updated_at
+ * @property int $id
+ */
+class Trade extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'symbol',
+        'direction',
+        'pnl',
+        'open_at',
+        'closes_at',
+        'images',
+        'params',
+        'notes',
+    ];
+
+    protected $casts = [
+        'images' => 'array',
+        'params' => 'array',
+    ];
+}
