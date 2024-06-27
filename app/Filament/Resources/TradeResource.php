@@ -51,6 +51,11 @@ class TradeResource extends Resource
 
                 Forms\Components\RichEditor::make('notes')
                     ->columnSpanFull(),
+                Forms\Components\Select::make('strategies')
+                    ->relationship('strategies', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->columnSpanFull(),
                 Forms\Components\Repeater::make('images')
                     ->schema([
                         Forms\Components\TextInput::make('url')
@@ -120,6 +125,15 @@ class TradeResource extends Resource
                                             ->columnSpanFull()
                                             ->hiddenLabel()
                                             ->url(fn(string $state) => $state, true),
+                                    ]),
+                                Infolists\Components\RepeatableEntry::make('strategies')
+                                    ->columnSpanFull()
+                                    ->grid(12)
+                                    ->contained(false)
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('name')
+                                            ->hiddenLabel()
+                                            ->badge(),
                                     ]),
                             ]),
                         Tabs\Tab::make('Details')
