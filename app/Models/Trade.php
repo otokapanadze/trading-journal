@@ -40,6 +40,10 @@ class Trade extends Model
     protected $casts = [
         'images' => 'array',
         'params' => 'array',
+        'open_at' => 'datetime',
+        'closes_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     public function account(): BelongsTo

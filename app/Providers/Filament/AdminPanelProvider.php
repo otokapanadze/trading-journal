@@ -2,6 +2,10 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Widgets\StrategyTopPNLChart;
+use App\Filament\Widgets\StrategyTotalPNLChart;
+use App\Filament\Widgets\TradeDailyPNLChart;
+use App\Filament\Widgets\TradeMonthlyPNLChart;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -37,8 +41,10 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                TradeDailyPNLChart::class,
+                TradeMonthlyPNLChart::class,
+                StrategyTotalPNLChart::class,
+                StrategyTopPNLChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,
