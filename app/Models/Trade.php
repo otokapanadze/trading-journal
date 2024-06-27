@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property string $symbol
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $created_at
  * @property string $updated_at
  * @property int $id
+ * @property int $account_id
  */
 class Trade extends Model
 {
@@ -31,10 +33,16 @@ class Trade extends Model
         'images',
         'params',
         'notes',
+        'account_id'
     ];
 
     protected $casts = [
         'images' => 'array',
         'params' => 'array',
     ];
+
+    public function account(): BelongsTo
+    {
+        return $this->belongsTo(Account::class);
+    }
 }

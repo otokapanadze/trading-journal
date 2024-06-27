@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Infolists;
 use Filament\Infolists\Components\Tabs;
-use Illuminate\Support\HtmlString;
 
 class TradeResource extends Resource
 {
@@ -71,6 +70,11 @@ class TradeResource extends Resource
 //                            ->columnSpan(1),
 //                    ])
 //                    ->columnSpanFull(),
+                Forms\Components\Select::make('account_id')
+                    ->relationship('account', 'name')
+                    ->preload()
+                    ->columnSpanFull()
+                    ->required(),
             ]);
     }
 
