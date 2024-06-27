@@ -14,6 +14,8 @@ class StrategyTotalPNLChart extends ChartWidget
 
     protected static ?string $heading = 'Strategy Comparison';
 
+    protected static ?string $maxHeight = '275px';
+
     protected function getData(): array
     {
         $res = Strategy::withCount(['trades as total_pnl' => fn($q) => $q->select(DB::raw("SUM(pnl) as total_pnl"))])->get();
