@@ -12,7 +12,7 @@ class CreateStrategy extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['user_id'] = auth()->user()->currentAccount()->id;
+        $data['account_id'] = auth()->user()->currentAccount()->id;
 
         return $data;
     }
