@@ -11,17 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('accounts', function (Blueprint $table) {
-            $table->id();
-
-            $table->string('name');
-            $table->float('balance');
-
-            $table->foreignId('user_id')
-                ->constrained()
-                ->cascadeOnDelete();
-
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('current_account_id')->nullable()->constrained('accounts')->onDelete('SET NULL');
         });
     }
 
@@ -30,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('accounts');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropConstrainedForeignId('current_account_id');
+        });
     }
 };

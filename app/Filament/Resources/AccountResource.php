@@ -43,7 +43,14 @@ class AccountResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->label('Name'),
+                Tables\Columns\TextColumn::make('current')
+                    ->badge()
+                    ->color('success')
+                    ->state(fn(Account $record) => $record->user->current_account_id === $record->id ? 'Current Account' : null)
+                    ->label('Current Account'),
                 Tables\Columns\TextColumn::make('balance')
+                    ->badge()
+                    ->money()
                     ->label('Balance'),
             ])
             ->filters([
@@ -52,6 +59,12 @@ class AccountResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('set_current_account')
+                    ->disabled(fn (Account $record) => $record->user->current_account_id === $record->id)
+                    ->accessSelectedRecords()
+                    ->action(function (Account $record) {
+                        $record->user()->update(['current_account_id' => $record->id]);
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

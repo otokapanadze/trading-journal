@@ -18,6 +18,10 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->json('images')->nullable();
 
+            $table->foreignId('account_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
             $table->timestamps();
         });
     }

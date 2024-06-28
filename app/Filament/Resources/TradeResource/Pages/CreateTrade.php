@@ -9,4 +9,11 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateTrade extends CreateRecord
 {
     protected static string $resource = TradeResource::class;
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['account_id'] = auth()->user()->currentAccount()->id;
+
+        return $data;
+    }
 }

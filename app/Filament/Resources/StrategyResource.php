@@ -83,6 +83,13 @@ class StrategyResource extends Resource
             ]);
     }
 
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $data['account_id'] = auth()->user()->currentAccount()->id;
+
+        return $data;
+    }
+
     public static function table(Table $table): Table
     {
         return $table

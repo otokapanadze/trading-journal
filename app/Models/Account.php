@@ -13,10 +13,21 @@ class Account extends Model
     protected $fillable = [
         'name',
         'balance',
+        'user_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function trades(): HasMany
     {
         return $this->hasMany(Trade::class);
+    }
+
+    public function strategies(): HasMany
+    {
+        return $this->hasMany(Strategy::class);
     }
 }

@@ -75,11 +75,6 @@ class TradeResource extends Resource
 //                            ->columnSpan(1),
 //                    ])
 //                    ->columnSpanFull(),
-                Forms\Components\Select::make('account_id')
-                    ->relationship('account', 'name')
-                    ->preload()
-                    ->columnSpanFull()
-                    ->required(),
             ]);
     }
 
