@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $created_at
  * @property string $updated_at
  * @property int $id
+ * @property int $account_id
+ *
  */
 class Strategy extends Model
 {
@@ -22,6 +24,7 @@ class Strategy extends Model
         'name',
         'description',
         'images',
+        'account_id',
     ];
 
     protected $casts = [
