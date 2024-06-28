@@ -18,9 +18,13 @@ class TradeMonthlyPNLChart extends ChartWidget
         $startDate = Carbon::now()->subMonths(11);
         $endDate = Carbon::now();
 
-        $trades = Trade::selectRaw("strftime('%m', closes_at) as month, strftime('%Y', closes_at) as year, sum(pnl) as pnl")
+        $trades = Trade::selectRaw("
+    MONTH(closes_at) as month,
+    YEAR(closes_at) as year,
+    sum(pnl) as pnl
+")
             ->whereBetween('closes_at', [$startDate->startOfMonth(), $endDate->endOfMonth()])
-            ->groupBy(DB::raw("strftime('%Y', closes_at)"), DB::raw("strftime('%m', closes_at)"))
+            ->groupBy(DB::raw("YEAR(closes_at)"), DB::raw("MONTH(closes_at)"))
             ->get()
             ->keyBy(function ($item) {
                 return Carbon::create($item->year, $item->month, 1)->format('M');

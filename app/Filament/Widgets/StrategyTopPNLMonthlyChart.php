@@ -45,12 +45,16 @@ class StrategyTopPNLMonthlyChart extends ChartWidget
         foreach (Strategy::get() as $i => $strategy) {
             $data = [];
 
-            $trades = Trade::selectRaw("strftime('%m', closes_at) as month, strftime('%Y', closes_at) as year, sum(pnl) as pnl")
+            $trades = Trade::selectRaw("
+        DATE_FORMAT(closes_at, '%m') as month,
+        DATE_FORMAT(closes_at, '%Y') as year,
+        SUM(pnl) as pnl
+    ")
                 ->whereHas('strategies', function ($query) use ($strategy) {
                     $query->where('strategies.id', $strategy->id);
                 })
                 ->whereBetween('closes_at', [$startDate->startOfMonth(), $endDate->endOfMonth()])
-                ->groupBy(DB::raw("strftime('%Y', closes_at)"), DB::raw("strftime('%m', closes_at)"))
+                ->groupBy(DB::raw("DATE_FORMAT(closes_at, '%Y')"), DB::raw("DATE_FORMAT(closes_at, '%m')"))
                 ->get()
                 ->keyBy(function ($item) {
                     return Carbon::create($item->year, $item->month, 1)->format('M');
