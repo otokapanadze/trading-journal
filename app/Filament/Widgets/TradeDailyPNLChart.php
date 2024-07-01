@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Models\Trade;
 use Carbon\Carbon;
 use Filament\Widgets\ChartWidget;
+use Illuminate\Support\Facades\Auth;
 
 class TradeDailyPNLChart extends ChartWidget
 {
@@ -19,6 +20,7 @@ class TradeDailyPNLChart extends ChartWidget
 
         $trades = Trade::selectRaw('DATE(closes_at) as date, sum(pnl) as pnl')
             ->whereBetween('closes_at', [$startDate->startOfDay(), $endDate->endOfDay()])
+            ->where('account_id', Auth::user()->current_account_id)
             ->groupBy('date')
             ->get()
             ->keyBy('date')

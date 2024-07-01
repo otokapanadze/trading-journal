@@ -6,6 +6,7 @@ use App\Models\Strategy;
 use App\Models\Trade;
 use Carbon\Carbon;
 use Filament\Widgets\ChartWidget;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class StrategyTotalPNLChart extends ChartWidget
@@ -18,7 +19,7 @@ class StrategyTotalPNLChart extends ChartWidget
 
     protected function getData(): array
     {
-        $res = Strategy::withCount(['trades as total_pnl' => fn($q) => $q->select(DB::raw("SUM(pnl) as total_pnl"))])->get();
+        $res = Strategy::where('account_id', Auth::user()->current_account_id)->withCount(['trades as total_pnl' => fn($q) => $q->select(DB::raw("SUM(pnl) as total_pnl"))])->get();
 
         return [
             'datasets' => [

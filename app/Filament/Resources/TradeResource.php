@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Infolists;
 use Filament\Infolists\Components\Tabs;
+use Filament\Tables\Filters\QueryBuilder;
 
 class TradeResource extends Resource
 {
@@ -144,7 +145,9 @@ class TradeResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $query = Trade::query()->where('account_id', auth()->user()->current_account_id);
         return $table
+            ->query($query)
             ->columns([
                 Tables\Columns\TextColumn::make('symbol')
                     ->searchable(),

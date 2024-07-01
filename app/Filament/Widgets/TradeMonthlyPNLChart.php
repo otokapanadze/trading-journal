@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Models\Trade;
 use Carbon\Carbon;
 use Filament\Widgets\ChartWidget;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class TradeMonthlyPNLChart extends ChartWidget
@@ -18,11 +19,7 @@ class TradeMonthlyPNLChart extends ChartWidget
         $startDate = Carbon::now()->subMonths(11);
         $endDate = Carbon::now();
 
-        $trades = Trade::selectRaw("
-    MONTH(closes_at) as month,
-    YEAR(closes_at) as year,
-    sum(pnl) as pnl
-")
+        $trades = Trade::where('account_id', Auth::user()->current_account_id)->selectRaw("MONTH(closes_at) as month, YEAR(closes_at) as year, sum(pnl) as pnl")
             ->whereBetween('closes_at', [$startDate->startOfMonth(), $endDate->endOfMonth()])
             ->groupBy(DB::raw("YEAR(closes_at)"), DB::raw("MONTH(closes_at)"))
             ->get()

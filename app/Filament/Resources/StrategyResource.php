@@ -92,7 +92,9 @@ class StrategyResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $query = Strategy::query()->where('account_id', auth()->user()->current_account_id);
         return $table
+            ->query($query)
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()

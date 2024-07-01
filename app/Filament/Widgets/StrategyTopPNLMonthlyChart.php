@@ -6,6 +6,7 @@ use App\Models\Strategy;
 use App\Models\Trade;
 use Carbon\Carbon;
 use Filament\Widgets\ChartWidget;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class StrategyTopPNLMonthlyChart extends ChartWidget
@@ -42,14 +43,10 @@ class StrategyTopPNLMonthlyChart extends ChartWidget
             $labels[] = $formattedDate;
         }
 
-        foreach (Strategy::get() as $i => $strategy) {
+        foreach (Strategy::where('account_id', Auth::user()->current_account_id)->get() as $i => $strategy) {
             $data = [];
 
-            $trades = Trade::selectRaw("
-        DATE_FORMAT(closes_at, '%m') as month,
-        DATE_FORMAT(closes_at, '%Y') as year,
-        SUM(pnl) as pnl
-    ")
+            $trades = Trade::selectRaw("DATE_FORMAT(closes_at, '%m') as month, DATE_FORMAT(closes_at, '%Y') as year, SUM(pnl) as pnl")
                 ->whereHas('strategies', function ($query) use ($strategy) {
                     $query->where('strategies.id', $strategy->id);
                 })
