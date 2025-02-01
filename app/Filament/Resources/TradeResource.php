@@ -37,6 +37,16 @@ class TradeResource extends Resource
                         return Auth::user()->currentAccount()->symbol_id;
                     })
                     ->columnSpan(2)
+                    ->createOptionForm([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(255),
+                    ])
+                    ->editOptionForm([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(255),
+                    ])
                     ->required(),
                 Forms\Components\Radio::make('direction')
                     ->columnSpan(2)
@@ -59,6 +69,26 @@ class TradeResource extends Resource
                     ->relationship('strategies', 'name')
                     ->multiple()
                     ->preload()
+                    ->createOptionForm([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Name')
+                            ->columnSpanFull()
+                            ->required(),
+                        Forms\Components\RichEditor::make('description')
+                            ->label('Description')
+                            ->columnSpanFull(),
+                        Forms\Components\TextInput::make('account_id')
+                            ->default(Auth::user()->currentAccount()->id),
+                    ])
+                    ->editOptionForm([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Name')
+                            ->columnSpanFull()
+                            ->required(),
+                        Forms\Components\RichEditor::make('description')
+                            ->label('Description')
+                            ->columnSpanFull(),
+                    ])
                     ->columnSpanFull(),
                 Forms\Components\Repeater::make('images')
                     ->schema([

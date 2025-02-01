@@ -32,8 +32,7 @@ class StrategyResource extends Resource
                     ->required(),
                 Forms\Components\RichEditor::make('description')
                     ->label('Description')
-                    ->columnSpanFull()
-                    ->required(),
+                    ->columnSpanFull(),
                 Forms\Components\Repeater::make('images')
                     ->defaultItems(0)
                     ->columnSpanFull()
