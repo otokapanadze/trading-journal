@@ -26,7 +26,7 @@ class Trade extends Model
     use HasFactory;
 
     protected $fillable = [
-        'symbol',
+        'symbol_id',
         'direction',
         'pnl',
         'open_at',
@@ -45,6 +45,11 @@ class Trade extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    public function symbol(): BelongsTo
+    {
+        return $this->belongsTo(Symbol::class);
+    }
 
     public function account(): BelongsTo
     {

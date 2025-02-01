@@ -13,14 +13,15 @@ return new class extends Migration
     {
         Schema::create('trades', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('account_id')
+                ->constrained()
+                ->cascadeOnDelete();
 
-            $table->string('symbol')->nullable();
+            $table->foreignId('symbol_id')
+                ->constrained()
+                ->cascadeOnDelete();
             $table->string('direction')->nullable();
             $table->float('pnl')->nullable();
-//            $table->unsignedBigInteger('user_id');
-//            $table->foreign('user_id')->references('id')->on('users');
-//            $table->unsignedBigInteger('account_id');
-//            $table->foreign('account_id')->references('id')->on('accounts');
             $table->dateTime('open_at')->nullable();
             $table->dateTime('closes_at')->nullable();
             $table->json('images')->nullable();
@@ -28,10 +29,6 @@ return new class extends Migration
             $table->text('notes')->nullable();
 
             $table->timestamps();
-
-            $table->foreignId('account_id')
-                ->constrained()
-                ->cascadeOnDelete();
         });
     }
 

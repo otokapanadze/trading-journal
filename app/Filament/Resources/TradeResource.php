@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Infolists;
 use Filament\Infolists\Components\Tabs;
 use Filament\Tables\Filters\QueryBuilder;
+use Illuminate\Support\Facades\Auth;
 
 class TradeResource extends Resource
 {
@@ -26,29 +27,31 @@ class TradeResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->columns(5)
+            ->columns(6)
             ->schema([
-                Forms\Components\TextInput::make('symbol')
-                    ->default('EUR/USD')
-                    ->columnSpan(1)
+                Forms\Components\Select::make('symbol_id')
+                    ->relationship('symbol', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->default(function () {
+                        return Auth::user()->currentAccount()->symbol_id;
+                    })
+                    ->columnSpan(2)
                     ->required(),
-                Forms\Components\Select::make('direction')
-                    ->columnSpan(1)
+                Forms\Components\Radio::make('direction')
+                    ->columnSpan(2)
                     ->options([
-                        'buy' => 'Buy',
-                        'sell' => 'Sell',
+                        'buy' => 'Buy 📈',
+                        'sell' => 'Sell 📉',
                     ])
+                    ->default('buy')
                     ->required(),
                 Forms\Components\TextInput::make('pnl')
-                    ->columnSpan(1)
+                    ->columnSpan(2)
                     ->label('Profit/Loss (-∞ / +∞)')
                     ->required()
-                    ->numeric(),
-                Forms\Components\DateTimePicker::make('open_at')
-                    ->columnSpan(1)
-                    ->required(),
-                Forms\Components\DateTimePicker::make('closes_at')
-                    ->columnSpan(1),
+                    ->numeric()
+                ,
 
                 Forms\Components\RichEditor::make('notes')
                     ->columnSpanFull(),
@@ -64,6 +67,13 @@ class TradeResource extends Resource
                             ->required(),
                     ])
                     ->columnSpanFull(),
+                Forms\Components\DateTimePicker::make('open_at')
+                    ->default(now()->subMinutes(10))
+                    ->columnSpan(3)
+                    ->required(),
+                Forms\Components\DateTimePicker::make('closes_at')
+                    ->default(now())
+                    ->columnSpan(3),
 //                Forms\Components\Repeater::make('params')
 //                    ->columns(2)
 //                    ->defaultItems(0)
@@ -103,7 +113,7 @@ class TradeResource extends Resource
                                         'sell' => 'danger',
                                         default => 'gray',
                                     }),
-                                Infolists\Components\TextEntry::make('symbol')
+                                Infolists\Components\TextEntry::make('symbol.name')
                                     ->badge()
                                     ->columnSpan(1),
                                 Infolists\Components\TextEntry::make('notes')
@@ -149,7 +159,7 @@ class TradeResource extends Resource
         return $table
             ->query($query)
             ->columns([
-                Tables\Columns\TextColumn::make('symbol')
+                Tables\Columns\TextColumn::make('symbol.name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('direction')
                     ->color(fn(string $state): string => match ($state) {

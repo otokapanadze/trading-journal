@@ -33,6 +33,12 @@ class AccountResource extends Resource
                     ->numeric()
                     ->label('Balance')
                     ->required(),
+                Forms\Components\Select::make('symbol_id')
+                    ->relationship('symbol', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->label('Default Symbol')
+                    ->required(),
             ]);
     }
 

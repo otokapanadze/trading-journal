@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Account extends Model
@@ -14,6 +15,7 @@ class Account extends Model
         'name',
         'balance',
         'user_id',
+        'symbol_id',
     ];
 
     public function user()
@@ -29,5 +31,10 @@ class Account extends Model
     public function strategies(): HasMany
     {
         return $this->hasMany(Strategy::class);
+    }
+
+    public function symbol(): BelongsTo
+    {
+        return $this->belongsTo(Symbol::class);
     }
 }
