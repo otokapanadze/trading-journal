@@ -13,6 +13,7 @@ class EditTrade extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Actions\CreateAction::make()->url(route('filament.app.resources.trades.create')),
             Actions\ViewAction::make(),
             Actions\DeleteAction::make(),
         ];

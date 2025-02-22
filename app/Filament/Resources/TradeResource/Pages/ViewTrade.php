@@ -13,6 +13,7 @@ class ViewTrade extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            Actions\CreateAction::make()->url(route('filament.app.resources.trades.create')),
             Actions\EditAction::make(),
         ];
     }
