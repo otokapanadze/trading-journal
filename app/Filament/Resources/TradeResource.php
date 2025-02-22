@@ -201,8 +201,8 @@ class TradeResource extends Resource
                         if (!isset($record->images[0]['url'])) return null;
                         return $record->images[0]['url'];
                     })
-                    ->width(640)
-                    ->height(360)
+                    ->width(700)
+                    ->height(300)
                     ->wrap()
                     ->square()
                     ->extraImgAttributes([
