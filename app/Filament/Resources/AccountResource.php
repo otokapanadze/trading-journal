@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\AccountResource\Pages;
 use App\Filament\Resources\AccountResource\RelationManagers;
 use App\Models\Account;
+use App\Models\Trade;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Tabs;
@@ -13,6 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Infolists;
 
@@ -58,6 +60,10 @@ class AccountResource extends Resource
                     ->badge()
                     ->money()
                     ->label('Balance'),
+                Tables\Columns\TextColumn::make('trades')
+                    ->label('Trades')
+                    ->state(fn(Model $record) => Trade::where('account_id', $record->id)->count())
+                ,
             ])
             ->filters([
                 //
