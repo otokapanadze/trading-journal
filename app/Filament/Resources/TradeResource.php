@@ -17,6 +17,7 @@ use Filament\Infolists;
 use Filament\Infolists\Components\Tabs;
 use Filament\Tables\Filters\QueryBuilder;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 
 class TradeResource extends Resource
 {
@@ -189,6 +190,25 @@ class TradeResource extends Resource
         return $table
             ->query($query)
             ->columns([
+                Tables\Columns\TextColumn::make('pnl')
+                    ->label('P/L')
+                    ->color(fn(string $state): string => $state == 0 ? 'gray' : ($state < 0 ? 'danger' : 'success'))
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\ImageColumn::make('imagess')
+                    ->label('Images')
+                    ->getStateUsing(function (Model $record) {
+                        if (!isset($record->images[0]['url'])) return null;
+                        return $record->images[0]['url'];
+                    })
+                    ->width(640)
+                    ->height(360)
+                    ->wrap()
+                    ->square()
+                    ->extraImgAttributes([
+                        'img' => 'src'
+                    ])
+                ,
                 Tables\Columns\TextColumn::make('symbol.name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('direction')
@@ -198,25 +218,6 @@ class TradeResource extends Resource
                         default => 'gray',
                     })
                     ->searchable(),
-                Tables\Columns\TextColumn::make('pnl')
-                    ->label('P/L')
-                    ->color(fn(string $state): string => $state == 0 ? 'gray' : ($state < 0 ? 'danger' : 'success'))
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('open_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('closes_at')
-                    ->dateTime()
-                    ->sortable(),
-//                Tables\Columns\TextColumn::make('created_at')
-//                    ->dateTime()
-//                    ->sortable()
-//                    ->toggleable(isToggledHiddenByDefault: true),
-//                Tables\Columns\TextColumn::make('updated_at')
-//                    ->dateTime()
-//                    ->sortable()
-//                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
