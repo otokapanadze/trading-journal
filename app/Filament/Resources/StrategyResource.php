@@ -42,6 +42,13 @@ class StrategyResource extends Resource
                             ->required(),
                     ])
                     ->label('Images'),
+                Forms\Components\Select::make('account_id')
+                    ->relationship('account', 'name')
+                    ->label('Account')
+                    ->preload()
+                    ->searchable()
+                    ->required()
+                    ->columnSpanFull(),
             ]);
     }
 
