@@ -187,7 +187,7 @@ class TradeResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $query = Trade::query()->where('account_id', auth()->user()->current_account_id);
+        $query = Trade::query()->where('account_id', auth()->user()->current_account_id)->orderBy('created_at', 'desc');
         return $table
             ->query($query)
             ->columns([
