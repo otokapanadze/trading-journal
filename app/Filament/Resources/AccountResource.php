@@ -58,10 +58,11 @@ class AccountResource extends Resource
                     ->color('success')
                     ->state(fn(Account $record) => $record->user->current_account_id === $record->id ? 'Current Account' : null)
                     ->label('Current Account'),
-                Tables\Columns\TextColumn::make('balance')
+                Tables\Columns\TextColumn::make('current_balance')
                     ->badge()
                     ->money()
-                    ->label('Balance'),
+                    ->label('Balance')
+                    ->state(fn(Model $record) => $record->balance - ($record->trades()->sum('pnl') ?? 0)),
                 Tables\Columns\TextColumn::make('trades')
                     ->label('Trades')
                     ->state(fn(Model $record) => Trade::where('account_id', $record->id)->count())
@@ -74,7 +75,7 @@ class AccountResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\Action::make('set_current_account')
-                    ->disabled(fn (Account $record) => $record->user->current_account_id === $record->id)
+                    ->disabled(fn(Account $record) => $record->user->current_account_id === $record->id)
                     ->accessSelectedRecords()
                     ->action(function (Account $record) {
                         $record->user()->update(['current_account_id' => $record->id]);
@@ -92,13 +93,52 @@ class AccountResource extends Resource
         return $infolist
             ->columns(3)
             ->schema([
-                Infolists\Components\TextEntry::make('name')
-                    ->label('Name'),
-                Infolists\Components\TextEntry::make('description')
-                    ->label('Description'),
-                Infolists\Components\TextEntry::make('balance')
-                    ->badge()
-                    ->money()
+                Infolists\Components\Section::make()
+                    ->columns(2)
+                    ->schema([
+                        Infolists\Components\TextEntry::make('name')
+                            ->label('Name'),
+                        Infolists\Components\TextEntry::make('description')
+                            ->label('Description'),
+                        Infolists\Components\TextEntry::make('current_balance')
+                            ->label('Balance')
+                            ->state(fn(Model $record) => $record->balance - ($record->trades()->sum('pnl') ?? 0))
+                            ->badge()
+                            ->money(),
+                        Infolists\Components\TextEntry::make('trades')->state(fn(Model $record) => $record->trades()->count() ?? 0),
+                        Infolists\Components\TextEntry::make('winning_trades')->state(fn(Model $record) => $record->trades()->where('pnl', '>', 0)->count() ?? 0),
+                        Infolists\Components\TextEntry::make('losing_trades')->state(fn(Model $record) => $record->trades()->where('pnl', '<', 0)->count() ?? 0),
+                        Infolists\Components\TextEntry::make('win-loss ratio')->state(function (Model $record) {
+                            $total = $record->trades()->count();
+                            if ($total === 0) return '--';
+                            $winning = $record->trades()->where('pnl', '>', 0)->count() ?? 0;
+                            return number_format((($winning / $total) * 100), 2) . '%';
+                        }),
+                        Infolists\Components\TextEntry::make('max_drawdown')->state(function (Model $record) {
+                            $trades = $record->trades()->orderBy('created_at')->get(['pnl']);
+
+                            if ($trades->isEmpty()) {
+                                return '--';
+                            }
+
+                            $balance = $record->balance;
+                            $peak = $balance;
+                            $max_drawdown = 0;
+
+                            foreach ($trades as $trade) {
+                                $balance += $trade->pnl;
+                                $peak = max($peak, $balance);
+                                $drawdown = ($peak - $balance) / max($peak, 1) * 100;
+                                $max_drawdown = max($max_drawdown, $drawdown);
+                            }
+
+                            return number_format($max_drawdown, 2) . '%';
+                        }),
+                        Infolists\Components\TextEntry::make('balance')
+                            ->label('Balance (Initial)')
+                            ->badge()
+                            ->money(),
+                    ])
             ]);
     }
 
