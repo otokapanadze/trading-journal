@@ -67,7 +67,7 @@ class TradeResource extends Resource
                 Forms\Components\RichEditor::make('notes')
                     ->columnSpanFull(),
                 Forms\Components\Select::make('strategies')
-                    ->relationship('strategies', 'name', fn($query) => $query->where('account_id', Auth::user()->currentAccount()->id))
+                    ->relationship('strategies', 'name')
                     ->multiple()
                     ->preload()
                     ->createOptionForm([

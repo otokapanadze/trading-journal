@@ -43,6 +43,12 @@ class AccountResource extends Resource
                     ->preload()
                     ->label('Default Symbol')
                     ->required(),
+                Forms\Components\Select::make('strategies')
+                    ->relationship('strategies', 'name')
+                    ->multiple()
+                    ->searchable()
+                    ->preload()
+                    ->label('Default Strategies'),
             ]);
     }
 

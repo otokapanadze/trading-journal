@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('strategies', function (Blueprint $table) {
+        Schema::create('account_strategies', function (Blueprint $table) {
             $table->id();
-
-            $table->string('name');
-            $table->string('description')->nullable();
-            $table->json('images')->nullable();
-
+            $table->unsignedBigInteger('account_id');
+            $table->unsignedBigInteger('strategy_id');
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('strategies');
+        Schema::dropIfExists('account_strategies');
     }
 };

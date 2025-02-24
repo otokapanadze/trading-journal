@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @property string $name
@@ -31,9 +32,9 @@ class Strategy extends Model
         'images' => 'array',
     ];
 
-    public function account(): BelongsTo
+    public function account(): BelongsToMany
     {
-        return $this->belongsTo(Account::class);
+        return $this->belongsToMany(Account::class, 'account_strategies');
     }
 
     public function trades()
