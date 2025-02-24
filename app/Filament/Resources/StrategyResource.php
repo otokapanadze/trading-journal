@@ -42,13 +42,6 @@ class StrategyResource extends Resource
                             ->required(),
                     ])
                     ->label('Images'),
-                Forms\Components\Select::make('account_id')
-                    ->relationship('account', 'name')
-                    ->label('Account')
-                    ->preload()
-                    ->searchable()
-                    ->required()
-                    ->columnSpanFull(),
             ]);
     }
 
@@ -89,18 +82,14 @@ class StrategyResource extends Resource
             ]);
     }
 
-    protected function mutateFormDataBeforeSave(array $data): array
-    {
-        $data['account_id'] = auth()->user()->currentAccount()->id;
-
-        return $data;
-    }
+//    protected function mutateFormDataBeforeSave(array $data): array
+//    {
+//        return $data;
+//    }
 
     public static function table(Table $table): Table
     {
-        $query = Strategy::query()->where('account_id', auth()->user()->current_account_id);
         return $table
-            ->query($query)
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()

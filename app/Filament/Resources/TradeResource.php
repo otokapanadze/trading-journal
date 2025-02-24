@@ -78,8 +78,6 @@ class TradeResource extends Resource
                         Forms\Components\RichEditor::make('description')
                             ->label('Description')
                             ->columnSpanFull(),
-                        Forms\Components\TextInput::make('account_id')
-                            ->default(Auth::user()->currentAccount()->id),
                     ])
                     ->editOptionForm([
                         Forms\Components\TextInput::make('name')
