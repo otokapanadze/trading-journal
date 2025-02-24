@@ -108,7 +108,7 @@ class AccountResource extends Resource
                             ->label('Description'),
                         Infolists\Components\TextEntry::make('current_balance')
                             ->label('Balance')
-                            ->state(fn(Model $record) => $record->balance - ($record->trades()->sum('pnl') ?? 0))
+                            ->state(fn(Model $record) => $record->balance + ($record->trades()->sum('pnl') ?? 0))
                             ->badge()
                             ->money(),
                         Infolists\Components\TextEntry::make('trades')->state(fn(Model $record) => $record->trades()->count() ?? 0),
