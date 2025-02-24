@@ -33,7 +33,7 @@ class AccountResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('balance')
                     ->numeric()
-                    ->label('Balance')
+                    ->label('Balance (Initial)')
                     ->required(),
                 Forms\Components\TextInput::make('description')
                     ->label('Description')->columnSpanFull(),
