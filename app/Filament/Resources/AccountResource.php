@@ -35,6 +35,8 @@ class AccountResource extends Resource
                     ->numeric()
                     ->label('Balance')
                     ->required(),
+                Forms\Components\TextInput::make('description')
+                    ->label('Description')->columnSpanFull(),
                 Forms\Components\Select::make('symbol_id')
                     ->relationship('symbol', 'name')
                     ->searchable()
@@ -92,6 +94,8 @@ class AccountResource extends Resource
             ->schema([
                 Infolists\Components\TextEntry::make('name')
                     ->label('Name'),
+                Infolists\Components\TextEntry::make('description')
+                    ->label('Description'),
                 Infolists\Components\TextEntry::make('balance')
                     ->badge()
                     ->money()
