@@ -70,6 +70,9 @@ class TradeResource extends Resource
                     ->relationship('strategies', 'name')
                     ->multiple()
                     ->preload()
+                    ->default(function () {
+                        return Auth::user()->currentAccount()->strategies->pluck('id')->toArray();
+                    })
                     ->createOptionForm([
                         Forms\Components\TextInput::make('name')
                             ->label('Name')
