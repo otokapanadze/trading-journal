@@ -68,7 +68,7 @@ class AccountResource extends Resource
                     ->badge()
                     ->money()
                     ->label('Balance')
-                    ->state(fn(Model $record) => $record->balance - ($record->trades()->sum('pnl') ?? 0)),
+                    ->state(fn(Model $record) => $record->balance + ($record->trades()->sum('pnl') ?? 0)),
                 Tables\Columns\TextColumn::make('trades')
                     ->label('Trades')
                     ->state(fn(Model $record) => Trade::where('account_id', $record->id)->count())

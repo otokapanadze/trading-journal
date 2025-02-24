@@ -7,6 +7,7 @@ use App\Filament\Widgets\StrategyTopPNLChart;
 use App\Filament\Widgets\StrategyTotalPNLChart;
 use App\Filament\Widgets\TradeDailyPNLChart;
 use App\Filament\Widgets\TradeMonthlyPNLChart;
+use App\Models\Account;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -59,6 +60,7 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->tenant(Account::class)
             ->authMiddleware([
                 Authenticate::class,
             ]);
