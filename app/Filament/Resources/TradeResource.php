@@ -187,14 +187,17 @@ class TradeResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $query = Trade::query()->where('account_id', auth()->user()->current_account_id)->orderBy('created_at', 'desc');
+        $query = Trade::query()->where('account_id', auth()->user()->current_account_id);
         return $table
             ->query($query)
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('pnl')
                     ->label('P/L')
                     ->color(fn(string $state): string => $state == 0 ? 'gray' : ($state < 0 ? 'danger' : 'success'))
                     ->numeric()
+                    ->sortable()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\ImageColumn::make('imagess')
                     ->label('Images')
@@ -211,8 +214,12 @@ class TradeResource extends Resource
                     ])
                 ,
                 Tables\Columns\TextColumn::make('symbol.name')
+                    ->sortable()
+                    ->searchable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('direction')
+                    ->sortable()
+                    ->searchable()
                     ->color(fn(string $state): string => match ($state) {
                         'buy' => 'success',
                         'sell' => 'danger',
