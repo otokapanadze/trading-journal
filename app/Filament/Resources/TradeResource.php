@@ -118,6 +118,10 @@ class TradeResource extends Resource
 //                            ->columnSpan(1),
 //                    ])
 //                    ->columnSpanFull(),
+                Forms\Components\Select::make('trade_session_id')
+                    ->relationship('session', 'name')
+                    ->columnSpanFull()
+                    ->searchable()
             ]);
     }
 

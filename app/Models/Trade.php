@@ -56,6 +56,11 @@ class Trade extends Model
         return $this->belongsTo(Account::class);
     }
 
+    public function session(): BelongsTo
+    {
+        return $this->belongsTo(Session::class, 'trade_session_id');
+    }
+
     public function strategies(): BelongsToMany
     {
         return $this->belongsToMany(Strategy::class, 'trade_strategies');
