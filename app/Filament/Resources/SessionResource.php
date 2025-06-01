@@ -35,6 +35,7 @@ class SessionResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->query(Session::query()->where('account_id', auth()->user()->current_account_id))
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->sortable(),
