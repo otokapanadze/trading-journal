@@ -154,6 +154,9 @@ class TradesRelationManager extends RelationManager
                 Tables\Actions\Action::make('preview')
                     ->icon('heroicon-o-play')
                     ->label('')
+                    ->visible(function () {
+                        return $this->getOwnerRecord()->media()->count();
+                    })
                     ->action(function ($record) {
                         $this->preview($record);
                     }),

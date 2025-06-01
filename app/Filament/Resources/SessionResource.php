@@ -24,11 +24,12 @@ class SessionResource extends Resource
         return $form
             ->schema([
                 Forms\Components\SpatieMediaLibraryFileUpload::make('video')
-                    ->columnSpanFull()
-                    ->required(),
+                    ->columnSpanFull(),
                 Forms\Components\DateTimePicker::make('start')->required(),
-                Forms\Components\DateTimePicker::make('end'),
-                Forms\Components\TextInput::make('name')->visibleOn(['create', 'edit']),
+                Forms\Components\DateTimePicker::make('end')->required(),
+                Forms\Components\TextInput::make('name')
+                    ->default(fn() => now()->format('l jS \\of F Y'))
+                    ->visibleOn(['create', 'edit']),
             ]);
     }
 
