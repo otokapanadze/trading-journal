@@ -55,7 +55,7 @@ class AccountResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->defaultSort('created_at', 'desc')
+            ->defaultSort('pinned', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
@@ -74,6 +74,8 @@ class AccountResource extends Resource
                     ->label('Trades')
                     ->state(fn(Model $record) => Trade::where('account_id', $record->id)->count())
                 ,
+                Tables\Columns\CheckboxColumn::make('pinned')
+                    ->label('Pin')
             ])
             ->filters([
                 //
