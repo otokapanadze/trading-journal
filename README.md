@@ -1,66 +1,70 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Trading Journal - Project Overview
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is a comprehensive trading journal application built with Laravel and the FilamentPHP admin panel. It allows traders to meticulously log, review, and analyze their trading performance across multiple accounts and strategies. The application is designed to be context-aware, focusing on the user's currently selected trading account for a streamlined experience.
 
-## About Laravel
+## Core Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The application is structured around several key resources, each providing a distinct set of functionalities.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 📈 Account Management
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+The `Account` resource is the central hub for managing different trading portfolios.
 
-## Learning Laravel
+-   **Multi-Account Support:** Create and manage multiple trading accounts, each with its own name, description, and initial balance.
+-   **Dynamic Balance Tracking:** The system automatically calculates the `Current Balance` for each account by summing the initial balance with the profit and loss (P/L) of all its associated trades.
+-   **Context Switching:** Users can set any account as their "Current Account". All other resources, like the Trade and Session lists, will then be filtered to show data only for this active account.
+-   **Defaults for Efficiency:** Assign a default trading symbol (e.g., `BTC/USD`) and default strategies to each account to speed up the process of logging new trades.
+-   **Pinning:** Pin important accounts to the top of the list for quick access.
+-   **Performance Analytics:** The account view page provides a detailed dashboard with key performance indicators (KPIs) including:
+    -   Current vs. Initial Balance
+    -   Total Number of Trades
+    -   Winning vs. Losing Trades
+    -   Win/Loss Ratio (%)
+    -   Maximum Drawdown (%)
+-   **Data Import:** A dedicated page allows for importing trade data into an account.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 📊 Trade Logging
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+The `Trade` resource is the heart of the journal, capturing the details of each individual trade.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-   **Detailed Trade Entry:** Log trades with essential details:
+    -   **Symbol:** The asset that was traded.
+    -   **Direction:** `Buy 📈` or `Sell 📉`.
+    -   **P/L:** The numeric profit or loss for the trade.
+-   **Rich Contextual Information:**
+    -   **Notes:** A rich-text editor to write detailed thoughts, analysis, or reasons for the trade.
+    -   **Image Attachments:** Attach multiple images (via URL) to each trade, perfect for saving chart setups, entry points, and exit points.
+    -   **Strategy Tagging:** Tag each trade with one or more predefined strategies to track their performance.
+-   **Automatic Association:** New trades are automatically associated with the user's currently active account.
+-   **Timestamps:** Record the `open_at` and `closes_at` times for each trade.
+-   **Intuitive Lists:** The trade list provides a quick, color-coded overview of P/L and trade direction.
 
-## Laravel Sponsors
+### 💡 Strategy Documentation
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+The `Strategy` resource allows users to build a library of their trading methods.
 
-### Premium Partners
+-   **Define Strategies:** Create and define personal trading strategies with a name.
+-   **Detailed Descriptions:** Use a rich-text editor to write comprehensive descriptions, rules, and conditions for each strategy.
+-   **Visual Examples:** Add multiple example images to visually illustrate the ideal chart patterns or setups for a strategy.
+-   **Easy Linking:** These strategies can be linked to accounts (as defaults) and individual trades (for performance tracking).
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### 🎬 Trading Sessions
 
-## Contributing
+The `Session` resource allows for grouping trades that occurred within a specific period.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+-   **Group Trades:** Create sessions with a name (e.g., "London Session - 2023-10-27"), start time, and end time.
+-   **Video Review:** Upload a video recording of the trading session for in-depth review and analysis.
+-   **Session-Specific Trades:** The session view page displays a list of all trades that have been associated with it.
 
-## Code of Conduct
+### 🔣 Symbol Management
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+The `Symbol` resource is a simple utility for managing tradable assets.
 
-## Security Vulnerabilities
+-   **CRUD Interface:** A simple interface to create, read, update, and delete trading symbols (e.g., `AAPL`, `BTC/USD`, `EUR/JPY`).
+-   **Application-Wide Use:** These symbols are then available in a searchable dropdown when setting up accounts or logging new trades.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Technical Stack
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+-   **Backend:** Laravel
+-   **Admin Panel / UI:** FilamentPHP v3
+-   **Database:** (Not specified, but compatible with Laravel's Eloquent ORM)
